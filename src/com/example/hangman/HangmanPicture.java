@@ -27,11 +27,13 @@ public class HangmanPicture extends View {
 		int height = canvas.getHeight();
 		p.setStrokeWidth(2);
 		p.setStyle(Style.STROKE);
-		p.setTextSize(20);
+		p.setTextSize(height*0.1F);
 		switch (leveli) {
 		case 9:
 			p.setColor(Color.RED);
+			p.setStyle(Style.FILL);
 			canvas.drawText("Game over", width*0.1F, height*0.5F, p);
+			p.setStyle(Style.STROKE);
 			p.setColor(Color.BLACK);
 		case 8:
 			canvas.drawLine(width * 0.5F, height * 0.8F, width * 0.75F, height * 1F, p);  // oikea jalka

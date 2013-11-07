@@ -5,13 +5,15 @@ import com.example.hangman.R;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity implements OnClickListener, OnKeyListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,12 @@ public class MainActivity extends Activity implements OnClickListener {
         FrameLayout frame = (FrameLayout) findViewById(R.id.area);
         HangmanPicture k = (HangmanPicture) frame.getChildAt(0);
 		k.setLevel(++level);
+	}
+
+	@Override
+	public boolean onKey(View v, int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -1,4 +1,8 @@
 <resources>
+    <string name="word1">helppo</string>
+    <string name="word2">vaikeampi</string>
+    <string name="word3">mahdoton</string>
+    <string name="word4">höyryveturi</string>
 
 
 </resources>
