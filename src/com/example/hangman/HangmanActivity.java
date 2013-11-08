@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-public class HangmanActivity extends Activity implements OnClickListener, OnKeyListener {
+public class HangmanActivity extends Activity implements OnKeyListener {
 
 	private WordProcessor wp = null;
 	
@@ -23,14 +23,11 @@ public class HangmanActivity extends Activity implements OnClickListener, OnKeyL
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-        Button b = (Button) findViewById(R.id.button1);
-        b.setOnClickListener(this);
         FrameLayout frame = (FrameLayout) findViewById(R.id.area);
         HangmanPicture k = new HangmanPicture(this);
         frame.addView(k);
         EditText t = (EditText) findViewById(R.id.editText1);
         t.setOnKeyListener(this);
-        t.setOnClickListener(this);
         wp = new WordProcessor(getApplicationContext());
         wp.pickWord();
         TextView v = (TextView) findViewById(R.id.textView1);
@@ -45,14 +42,6 @@ public class HangmanActivity extends Activity implements OnClickListener, OnKeyL
 	}
 
     private int level = 0;
-	@Override
-	public void onClick(View arg0) {
-        FrameLayout frame = (FrameLayout) findViewById(R.id.area);
-        HangmanPicture k = (HangmanPicture) frame.getChildAt(0);
-		k.setLevel(++level);
-		wp.pickWord();
-	}
-
 	@Override
 	public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 		if (arg2.getAction() != KeyEvent.ACTION_DOWN) return true;
@@ -71,5 +60,4 @@ public class HangmanActivity extends Activity implements OnClickListener, OnKeyL
 			k.setLevel(10);
 		return true;
 	}
-
 }

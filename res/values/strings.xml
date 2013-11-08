@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="Words">
+        <item >first</item>
+        <item >second</item>
+        <item >third</item>
+        <item >fourth</item>
+        <item >fifth</item>
+        <item >sixth</item>
+    </string-array>
 
     <string name="app_name">Hangman</string>
     <string name="action_settings">Settings</string>
