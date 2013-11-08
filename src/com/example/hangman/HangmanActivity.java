@@ -13,7 +13,7 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-public class MainActivity extends Activity implements OnClickListener, OnKeyListener {
+public class HangmanActivity extends Activity implements OnClickListener, OnKeyListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
