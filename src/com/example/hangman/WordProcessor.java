@@ -1,17 +1,27 @@
 package com.example.hangman;
 
+import java.util.Random;
+
+import android.content.*;
+
 public class WordProcessor {
 
 	private String word = null;
-	private String letters = null;
+	private String letters = "";
+	private Context context = null;
+	
+	public WordProcessor (Context c) {
+		context = c;
+	}
 	
 	/**
 	 * Selects the word randomly from a word list in resources.
 	 */
 	void pickWord() {
-		int count = R.array.Words; //TODO tämä on taulukon ID, ei koko
-		System.out.println(count);
-		
+		String[] words = context.getResources().getStringArray(R.array.Words);
+		Random r = new Random();
+		int i = r.nextInt(words.length);
+		word = words[i].toUpperCase();
 	}
 	
 	/**

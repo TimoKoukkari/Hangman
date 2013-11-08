@@ -29,6 +29,13 @@ public class HangmanPicture extends View {
 		p.setStyle(Style.STROKE);
 		p.setTextSize(height*0.1F);
 		switch (leveli) {
+		case 10:
+			p.setColor(Color.GREEN);
+			p.setStyle(Style.FILL);
+			canvas.drawText("You won!", width*0.1F, height*0.5F, p);
+			p.setStyle(Style.STROKE);
+			p.setColor(Color.BLACK);
+			break;
 		case 9:
 			p.setColor(Color.RED);
 			p.setStyle(Style.FILL);
