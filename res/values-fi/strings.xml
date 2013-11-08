@@ -1,8 +1,12 @@
 <resources>
-    <string name="word1">helppo</string>
-    <string name="word2">vaikeampi</string>
-    <string name="word3">mahdoton</string>
-    <string name="word4">höyryveturi</string>
+    <string-array name="Words">
+        <item >eka</item>
+        <item >toka</item>
+        <item >kolmas</item>
+        <item >neljäs</item>
+        <item >viides</item>
+    </string-array>
+    <item format="string" name="Sanat" type="array">eka</item>
 
 
 </resources>
