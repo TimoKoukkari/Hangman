@@ -43,6 +43,9 @@ public class HangmanActivity extends Activity implements OnClickListener, OnKeyL
         TextView t = (TextView) findViewById(R.id.textView1);
         t.setOnKeyListener(this);
         t.setOnClickListener(this);
+        if (level > 0) {
+        	k.setLevel(level);
+        }
 	}
 
 	@Override
