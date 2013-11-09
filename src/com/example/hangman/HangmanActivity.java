@@ -21,7 +21,8 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 
 	private WordProcessor wp = null;
 	private String name = "Default";
-	
+    private int level = 0;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		String savedWord = null;
@@ -73,14 +74,20 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 		return true;
 	}
 
-    private int level = 0;
 	@Override
 	public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
-		if (arg2.getAction() != KeyEvent.ACTION_DOWN) return true;
+		
+		char c = arg2.getDisplayLabel();
+		// Ignore if they key is not a printable key
+		if (c == 0) {
+			return false;
+		}
+		if (arg2.getAction() != KeyEvent.ACTION_DOWN) {
+			return true;
+		}
 		
         FrameLayout frame = (FrameLayout) findViewById(R.id.area);
-        HangmanPicture k = (HangmanPicture) frame.getChildAt(0);
-		char c = arg2.getDisplayLabel();
+        HangmanPicture k = (HangmanPicture) frame.getChildAt(0);	
 		if (!wp.addLetter(c)) {
 			k.setLevel(++level);
 		}
@@ -88,8 +95,12 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 		String s = wp.getMaskedWord();
 		TextView t = (TextView) findViewById(R.id.textView1);
 		t.setText(s);
-		if (!s.contains("_"))
+		// The user has guessed the word
+		if (!s.contains("_")){
 			k.setLevel(10);
+            t = (TextView) findViewById(R.id.editText1);
+            t.setVisibility(View.GONE);
+		}
 		return true;
 	}
 	@Override
