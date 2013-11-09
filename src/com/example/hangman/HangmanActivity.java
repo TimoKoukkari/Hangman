@@ -20,16 +20,20 @@ import android.widget.TextView;
 public class HangmanActivity extends Activity implements OnKeyListener {
 
 	private WordProcessor wp = null;
-	
 	private String name = "Default";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		String savedWord = null;
+		String savedLetters = null;
 		super.onCreate(savedInstanceState);
 		// Read saved state
 		if (savedInstanceState != null) {        
 	       level = savedInstanceState.getInt("LEVEL");
+	       savedWord = savedInstanceState.getString("WORD");
+	       savedLetters = savedInstanceState.getString("LETTERS");
 		}		
+
 		// Read input parameters from the bundle inside of the intent
 		Intent intent = getIntent();
 		name = intent.getStringExtra("NAME");
@@ -42,11 +46,22 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 		
         FrameLayout frame = (FrameLayout) findViewById(R.id.area);
         HangmanPicture k = new HangmanPicture(this);
+        // Restore saved level
+		if (level > 0) {
+			k.setLevel(level);
+		}
         frame.addView(k);
         EditText t = (EditText) findViewById(R.id.editText1);
         t.setOnKeyListener(this);
-        wp = new WordProcessor(getApplicationContext());
-        wp.pickWord();
+        
+        if (savedWord == null) {
+          wp = new WordProcessor(getApplicationContext());
+          wp.pickWord(); 
+        // Restore saved state
+        } else { 
+          wp = new WordProcessor(getApplicationContext(), savedWord, savedLetters);	
+        }
+        	      
         TextView v = (TextView) findViewById(R.id.textView1);
         v.setText(wp.getMaskedWord());
 	}
@@ -79,9 +94,9 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 	}
 	@Override
     protected void onSaveInstanceState(Bundle outState) {
-        // Save away the original text, so we still have it if the activity
-        // needs to be killed while paused.
         outState.putInt("LEVEL", level);
+        outState.putString("WORD", wp.getWord());
+        outState.putString("LETTERS", wp.getLetters());
         super.onSaveInstanceState(outState);
     }
 	

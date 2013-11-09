@@ -14,6 +14,12 @@ public class WordProcessor {
 		context = c;
 	}
 	
+	// Constructor that is used to restore saved state
+	public WordProcessor (Context c, String restoreWord, String restoreLetters) {
+		context = c;
+		word = restoreWord;
+		letters = restoreLetters;
+	}
 	/**
 	 * Selects the word randomly from a word list in resources.
 	 */
@@ -30,6 +36,10 @@ public class WordProcessor {
 	 */
 	String getWord() {
 		return word;
+	}
+	
+	String getLetters(){
+		return letters;
 	}
 	
 	/**
