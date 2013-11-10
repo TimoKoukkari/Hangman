@@ -43,21 +43,21 @@ public class HangmanPicture extends View {
 			p.setStyle(Style.STROKE);
 			p.setColor(Color.BLACK);
 		case 8:
-			canvas.drawLine(width * 0.5F, height * 0.8F, width * 0.75F, height * 1F, p);  // oikea jalka
+			canvas.drawLine(width * 0.5F, height * 0.7F, width * 0.75F, height * 0.9F, p);  // oikea jalka
 		case 7:
-			canvas.drawLine(width * 0.5F, height * 0.8F, width * 0.25F, height * 1F, p);  // vasen jalka
+			canvas.drawLine(width * 0.5F, height * 0.7F, width * 0.25F, height * 0.9F, p);  // vasen jalka
 		case 6:
-			canvas.drawLine(width * 0.5F, height * 0.5F, width * 0.5F, height * 0.8F, p); // vartalo
+			canvas.drawLine(width * 0.5F, height * 0.4F, width * 0.5F, height * 0.7F, p); // vartalo
 		case 5:
-			canvas.drawLine(width * 0.5F, height * 0.5F, width * 0.75F, height * 0.7F, p);  // oikea käsi
+			canvas.drawLine(width * 0.5F, height * 0.4F, width * 0.75F, height * 0.6F, p);  // oikea käsi
 		case 4:
-			canvas.drawLine(width * 0.5F, height * 0.5F, width * 0.25F, height * 0.7F, p);  // vasen käsi
+			canvas.drawLine(width * 0.5F, height * 0.4F, width * 0.25F, height * 0.6F, p);  // vasen käsi
 		case 3:
-			canvas.drawLine(width*0.5F, height*0.4F, width*0.5F, height*0.5F, p);  // kaula
+			canvas.drawLine(width*0.5F, height*0.3F, width*0.5F, height*0.4F, p);  // kaula
 		case 2:
-			canvas.drawOval(new RectF(width*0.4F, height*0.2F, width*0.6F, height*0.4F), p);  // pää
+			canvas.drawOval(new RectF(width*0.4F, height*0.1F, width*0.6F, height*0.3F), p);  // pää
 		case 1:
-			canvas.drawLine(width*0.5F, height*0.2F, width*0.5F, 0, p);  // köysi
+			canvas.drawLine(width*0.5F, height*0.1F, width*0.5F, 0, p);  // köysi
 		case 0:
 			p.setStrokeWidth(10);  // hirsipuu
 			canvas.drawLine(0, 0, 0, height, p);
