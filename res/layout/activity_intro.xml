@@ -28,7 +28,7 @@
             android:layout_alignLeft="@+id/nameField"
             android:layout_alignParentTop="true"
             android:layout_marginTop="81dp"
-            android:text="These are the instructions."
+            android:text="@string/Instructions"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="6pt" />
 
