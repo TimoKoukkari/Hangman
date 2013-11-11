@@ -8,13 +8,18 @@ import com.example.hangman.R;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -30,6 +35,8 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 	private TimerTask timeoutTask;
 	private Runnable timeoutHandler;
 
+	boolean hwKbd=false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		String savedWord = null;
@@ -59,9 +66,15 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 			k.setLevel(level);
 		}
 		frame.addView(k);
-		EditText t = (EditText) findViewById(R.id.editText1);
-		t.setOnKeyListener(this);
-
+		
+		EditText t = (EditText) findViewById(R.id.editText1);		
+		hwKbd = (getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS);
+		if (!hwKbd) {
+			setSwKbdListener(t);
+		} else {
+			t.setOnKeyListener(this);
+		}
+		
 		if (savedWord == null) {
 			wp = new WordProcessor(getApplicationContext());
 			wp.pickWord(); 
@@ -96,15 +109,20 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 			return true;
 		}
 
+        handleChar(c);
+		return true;
+	}
+
+	void handleChar(char c) {
+		char C = Character.toUpperCase(c);
 		inputTimer.cancel();
 		timeoutTask.cancel();
 
 		FrameLayout frame = (FrameLayout) findViewById(R.id.area);
 		HangmanPicture k = (HangmanPicture) frame.getChildAt(0);	
-		if (!wp.addLetter(c)) {
+		if (!wp.addLetter(C)) {
 			k.setLevel(++level);
 		}
-
 		String s = wp.getMaskedWord();
 		TextView t = (TextView) findViewById(R.id.textView1);
 		t.setText(s);
@@ -119,9 +137,33 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 		} else {
 			startTimer();
 		}
-		return true;
 	}
+	
+	private void setSwKbdListener(EditText t) {
+		t.requestFocus();
+		InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(t, InputMethodManager.SHOW_IMPLICIT);
 
+		t.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+	        @Override
+	        public void beforeTextChanged(CharSequence s, int start, int count,
+	                int after) {
+	        }
+			@Override
+			public void afterTextChanged(Editable s) { 
+				if (s.length()> 0) {
+				  char c = s.charAt(s.length()-1);
+				  handleChar(c);
+				  s.clear();
+				}
+			}
+		});
+	}
+	
 	private void startTimer(){
 		timeoutHandler = new Runnable(){
 			@Override
