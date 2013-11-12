@@ -21,10 +21,13 @@ public class HangmanPicture extends View {
 	}
 
 	private final Paint p = new Paint();
+	private float scale = 1.0F;
+	private int leveli = 0;
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
+		int width = (int)(canvas.getWidth() * scale);
+		int height = (int)(canvas.getHeight() * scale);
 		p.setStrokeWidth(2);
 		p.setStyle(Style.STROKE);
 		p.setTextSize(height*0.1F);
@@ -67,7 +70,9 @@ public class HangmanPicture extends View {
 		super.onDraw(canvas);
 	}
 	
-	private int leveli = 0;
+	public void setScale(float scl) {
+		scale = scl;
+	}
 	/**
 	 * 
 	 * @param level Valid values 0 - 9. 0 = no wrong guesses, 9 = game over

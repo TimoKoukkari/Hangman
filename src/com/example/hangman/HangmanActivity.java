@@ -71,6 +71,7 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 		hwKbd = (getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS);
 		if (!hwKbd) {
 			setSwKbdListener(t);
+			k.setScale(0.5F);
 		} else {
 			t.setOnKeyListener(this);
 		}
@@ -143,7 +144,7 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 		t.requestFocus();
 		InputMethodManager imm = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(t, InputMethodManager.SHOW_IMPLICIT);
+        imm.showSoftInput(t, InputMethodManager.SHOW_FORCED);
 
 		t.addTextChangedListener(new TextWatcher() {
 			@Override
