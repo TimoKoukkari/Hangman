@@ -1,8 +1,10 @@
 package com.example.hangman;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-
 import android.content.*;
+import android.database.Cursor;
 
 public class WordProcessor {
 
@@ -24,10 +26,28 @@ public class WordProcessor {
 	 * Selects the word randomly from a word list in resources.
 	 */
 	void pickWord() {
-		String[] words = context.getResources().getStringArray(R.array.Words);
+		
+		String[] words = context.getResources().getStringArray(R.array.Words);		
+		List<String> wordList = new ArrayList<String>();
+		
 		Random r = new Random();
-		int i = r.nextInt(words.length);
-		word = words[i].toUpperCase();
+		
+		Cursor cursor = context.getContentResolver().query(
+				HangmanContent.Words.CONTENT_URI,null,null,null,null);
+        if (cursor != null) {
+            while(cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(HangmanContent.Words.COLUMN_NAME_WORD);
+                wordList.add(cursor.getString(index));
+            }
+            cursor.close();
+        }
+        if (wordList.size() > 0) {
+            int i = r.nextInt(wordList.size());
+            word = wordList.get(i).toUpperCase();
+        } else {
+    		int i = r.nextInt(words.length);
+    		word = words[i].toUpperCase();
+        }		
 	}
 	
 	/**

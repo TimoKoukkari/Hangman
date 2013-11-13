@@ -31,5 +31,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HangmanActivity" />
         </activity>
+        <activity
+            android:name="com.example.hangman.ContentActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".IntroActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ContentActivity" />
+        </activity>
+        <provider android:name="HangmanContentProvider" 
+                  android:authorities="com.example.provider.hangmancontent"
+                  android:exported="false">
+        </provider>
     </application>
 </manifest>

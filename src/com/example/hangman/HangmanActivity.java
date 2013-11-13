@@ -17,10 +17,10 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
+//import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
+//import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -66,8 +66,7 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 			k.setLevel(level);
 		}
 		frame.addView(k);
-		
-		EditText t = (EditText) findViewById(R.id.editText1);		
+		EditText t = (EditText) findViewById(R.id.newWordField);		
 		hwKbd = (getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS);
 		if (!hwKbd) {
 			setSwKbdListener(t);
@@ -84,7 +83,7 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 			wp = new WordProcessor(getApplicationContext(), savedWord, savedLetters);	
 		}
 
-		TextView v = (TextView) findViewById(R.id.textView1);
+		TextView v = (TextView) findViewById(R.id.listItemWord);
 		v.setText(wp.getMaskedWord());
         
 		startTimer();
@@ -125,7 +124,7 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 			k.setLevel(++level);
 		}
 		String s = wp.getMaskedWord();
-		TextView t = (TextView) findViewById(R.id.textView1);
+		TextView t = (TextView) findViewById(R.id.listItemWord);
 		t.setText(s);
 		// The user has guessed the word
 		if (!s.contains("_")){
@@ -188,8 +187,8 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 	}
 	
 	private void gameOver() {
-		TextView t = (TextView) findViewById(R.id.textView1);
-		t = (TextView) findViewById(R.id.editText1);
+		TextView t = (TextView) findViewById(R.id.listItemWord);
+		t = (TextView) findViewById(R.id.newWordField);
 		t.setVisibility(View.INVISIBLE);
 		t.setOnKeyListener(null); 
 	}

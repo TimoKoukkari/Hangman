@@ -22,8 +22,21 @@ public class IntroActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intro);
-        Button b = (Button) findViewById(R.id.startButton);
-        b.setOnClickListener(this);
+        Button startButton = (Button) findViewById(R.id.startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            	startHangman();
+            };
+        });
+        Button editButton = (Button) findViewById(R.id.EditContentButton);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+        		Intent editIntent = new Intent(IntroActivity.this, ContentActivity.class);
+        		startActivity(editIntent);  	;
+            };
+        });
         
         if (savedInstanceState != null) {
         	name = savedInstanceState.getString("NAME");
@@ -60,6 +73,7 @@ public class IntroActivity extends Activity implements OnClickListener {
 		hangmanIntent.putExtra("NAME", name);
 		startActivity(hangmanIntent);  	
     }
+    
     
     @Override
     protected void onPause() {

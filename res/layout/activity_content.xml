@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/newWordField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/AddWordButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="61dp"
+        android:ems="10"
+        android:hint="@string/newWordString" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/AddWordButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="34dp"
+        android:text="@string/addWord" />
+
+    <ListView
+        android:id="@+id/wordList"
+        android:choiceMode="singleChoice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/newWordField"
+        android:layout_alignParentLeft="true"
+        tools:listitem="@layout/word_list" >
+    </ListView>
+
+</RelativeLayout>

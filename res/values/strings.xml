@@ -13,5 +13,9 @@
     <string name="action_settings">Settings</string>
     <string name="startButtonText">Start!</string>
     <string name="Instructions">Guess the letters in the word. Eight wrong guesses and you are dead.</string>
+    <string name="newWordString">New word</string>
+    <string name="addWord">Add Word</string>
+    <string name="EditButtonText">Edit words</string>
+    <string name="HannuHanhi">hannuhanhi</string>
 
 </resources>

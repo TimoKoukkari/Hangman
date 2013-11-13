@@ -13,17 +13,17 @@
         android:id="@+id/area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/editText1"
+        android:layout_above="@+id/newWordField"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
 
     </FrameLayout>
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/newWordField"
         android:layout_width="15pt"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignBottom="@+id/listItemWord"
         android:layout_alignLeft="@+id/area"
         android:ems="10" >
 
@@ -34,18 +34,18 @@
         android:id="@+id/User"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignBaseline="@+id/listItemWord"
+        android:layout_alignBottom="@+id/listItemWord"
         android:layout_alignRight="@+id/area"
         android:text="User&apos;s name" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/listItemWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="60dp"
-        android:layout_toRightOf="@+id/editText1"
+        android:layout_toRightOf="@+id/newWordField"
         android:text="X____X"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
