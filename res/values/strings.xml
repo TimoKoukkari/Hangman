@@ -17,5 +17,6 @@
     <string name="addWord">Add Word</string>
     <string name="EditButtonText">Edit words</string>
     <string name="HannuHanhi">hannuhanhi</string>
+    <string name="HintString">Hint</string>
 
 </resources>

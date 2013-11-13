@@ -42,7 +42,7 @@ public class HangmanContentProvider extends ContentProvider{
     /**
      * The database version
      */
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     /**
      * A projection map used to select columns from the database
@@ -98,7 +98,7 @@ public class HangmanContentProvider extends ContentProvider{
         sHangmanProjectionMap.put(HangmanContent.Words._ID, HangmanContent.Words._ID);
 
         // Maps "title" to "title"
-        sHangmanProjectionMap.put(HangmanContent.Words.COLUMN_NAME_TITLE, HangmanContent.Words.COLUMN_NAME_TITLE);
+        sHangmanProjectionMap.put(HangmanContent.Words.COLUMN_NAME_HINT, HangmanContent.Words.COLUMN_NAME_HINT);
 
         // Maps "note" to "note"
         sHangmanProjectionMap.put(HangmanContent.Words.COLUMN_NAME_WORD, HangmanContent.Words.COLUMN_NAME_WORD);
@@ -130,7 +130,7 @@ public class HangmanContentProvider extends ContentProvider{
        public void onCreate(SQLiteDatabase db) {
            db.execSQL("CREATE TABLE " + HangmanContent.Words.TABLE_NAME + " ("
                    + HangmanContent.Words._ID + " INTEGER PRIMARY KEY,"
-                   + HangmanContent.Words.COLUMN_NAME_TITLE + " TEXT,"
+                   + HangmanContent.Words.COLUMN_NAME_HINT + " TEXT,"
                    + HangmanContent.Words.COLUMN_NAME_WORD + " TEXT"
                    + ");");
        }
@@ -147,7 +147,7 @@ public class HangmanContentProvider extends ContentProvider{
        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
            // Kills the table and existing data
-           db.execSQL("DROP TABLE IF EXISTS WORDS");
+           db.execSQL("DROP TABLE IF EXISTS words");
 
            // Recreates the database with a new version
            onCreate(db);
@@ -319,9 +319,9 @@ public class HangmanContentProvider extends ContentProvider{
         }
 
         // If the values map doesn't contain a title, sets the value to the default title.
-        if (values.containsKey(HangmanContent.Words.COLUMN_NAME_TITLE) == false) {
+        if (values.containsKey(HangmanContent.Words.COLUMN_NAME_HINT) == false) {
             Resources r = Resources.getSystem();
-            values.put(HangmanContent.Words.COLUMN_NAME_TITLE, r.getString(android.R.string.untitled));
+            values.put(HangmanContent.Words.COLUMN_NAME_HINT, r.getString(android.R.string.untitled));
         }
 
         // If the values map doesn't contain note text, sets the value to an empty string.

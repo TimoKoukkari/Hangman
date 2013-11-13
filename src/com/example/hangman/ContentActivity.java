@@ -39,12 +39,12 @@ public class ContentActivity extends Activity {
         String[] mWordListColumns =
         {
             HangmanContent.Words.COLUMN_NAME_WORD,   // Contract class constant containing the word column name
-            HangmanContent.Words.COLUMN_NAME_TITLE  // Contract class constant containing the locale column name
+            HangmanContent.Words.COLUMN_NAME_HINT  // Contract class constant containing the locale column name
         };
         mWordList = (ListView)findViewById(R.id.wordList);
         
      // Defines a list of View IDs that will receive the Cursor columns for each row
-        int[] mWordListItems = { R.id.listItemWord, R.id.listItemTitle};
+        int[] mWordListItems = { R.id.listItemWord, R.id.listItemHint};
         
         mCursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,null,null,null);
         
@@ -61,7 +61,7 @@ public class ContentActivity extends Activity {
         // Sets the adapter for the ListView
         mWordList.setAdapter(mCursorAdapter);  
   
-        /*
+        /* Adding a listener to a ListView does not work...
         mWordList.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -93,13 +93,19 @@ public class ContentActivity extends Activity {
 		String word = wordInput.getText().toString().toUpperCase();  	
 		//Call content provider
 
+		TextView hintInput = (TextView)findViewById(R.id.hintField);
+		String hint = hintInput.getText().toString().toUpperCase();  
+		
+		
         ContentValues values = new ContentValues();
         values.put(HangmanContent.Words.COLUMN_NAME_WORD, word);
-        values.put(HangmanContent.Words.COLUMN_NAME_TITLE, "Dummy");
+        values.put(HangmanContent.Words.COLUMN_NAME_HINT, hint);
         Uri uri = getContentResolver().insert(HangmanContent.Words.CONTENT_URI, values);
         
         Toast.makeText(this, word + ": " + uri,
                 Toast.LENGTH_LONG).show();
+        mCursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,null,null,null);
+        mCursorAdapter.changeCursor(mCursor);
     }
     
     @Override

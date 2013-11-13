@@ -24,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HangmanActivity extends Activity implements OnKeyListener {
 
@@ -86,6 +87,9 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 		TextView v = (TextView) findViewById(R.id.listItemWord);
 		v.setText(wp.getMaskedWord());
         
+        Toast.makeText(this, wp.getHint(),
+                Toast.LENGTH_LONG).show();
+		
 		startTimer();
 		
 	}

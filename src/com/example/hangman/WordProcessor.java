@@ -9,6 +9,7 @@ import android.database.Cursor;
 public class WordProcessor {
 
 	private String word = null;
+	private String hint = null;
 	private String letters = "";
 	private Context context = null;
 	
@@ -29,6 +30,7 @@ public class WordProcessor {
 		
 		String[] words = context.getResources().getStringArray(R.array.Words);		
 		List<String> wordList = new ArrayList<String>();
+		List<String> hintList = new ArrayList<String>();
 		
 		Random r = new Random();
 		
@@ -38,15 +40,19 @@ public class WordProcessor {
             while(cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(HangmanContent.Words.COLUMN_NAME_WORD);
                 wordList.add(cursor.getString(index));
+                index = cursor.getColumnIndex(HangmanContent.Words.COLUMN_NAME_HINT);
+                hintList.add(cursor.getString(index));
             }
             cursor.close();
         }
         if (wordList.size() > 0) {
             int i = r.nextInt(wordList.size());
             word = wordList.get(i).toUpperCase();
+            hint = hintList.get(i);
         } else {
     		int i = r.nextInt(words.length);
     		word = words[i].toUpperCase();
+    		hint = word;
         }		
 	}
 	
@@ -57,7 +63,9 @@ public class WordProcessor {
 	String getWord() {
 		return word;
 	}
-	
+	String getHint() {
+		return hint;
+	}
 	String getLetters(){
 		return letters;
 	}

@@ -94,7 +94,7 @@ public final class HangmanContent {
         /**
          * The default sort order for this table
          */
-        public static final String DEFAULT_SORT_ORDER = "word DESC";
+        public static final String DEFAULT_SORT_ORDER = "word ASC";
 
         /*
          * Column definitions
@@ -104,7 +104,7 @@ public final class HangmanContent {
          * Column name for the title of the note
          * <P>Type: TEXT</P>
          */
-        public static final String COLUMN_NAME_TITLE = "title";
+        public static final String COLUMN_NAME_HINT = "hint";
 
         /**
          * Column name of the note content
