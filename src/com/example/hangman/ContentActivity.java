@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -60,18 +61,47 @@ public class ContentActivity extends Activity {
 
         // Sets the adapter for the ListView
         mWordList.setAdapter(mCursorAdapter);  
-  
-        /* Adding a listener to a ListView does not work...
-        mWordList.setOnClickListener(new View.OnClickListener() {
-			
+        
+        
+        mWordList.setOnItemSelectedListener(new ListView.OnItemSelectedListener() {
+        
+        	@Override
+			public void onItemSelected(AdapterView<?> parent,
+					View view, int position, long id) {
+				String message = "ID: " + Integer.toString((int)id) + " - ";
+				message += "Pos: " + Integer.toString(position);
+		        Toast.makeText(ContentActivity.this, message,
+		                Toast.LENGTH_LONG).show();			
+			}
 			@Override
-			public void onClick(View v) {
-				long id = mWordList.getSelectedItemId();
-		        Toast.makeText(ContentActivity.this, Integer.toString((int)id),
-		                Toast.LENGTH_LONG).show();
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub			
 			}
 		});
-		*/
+        
+        mWordList.setOnItemClickListener(new ListView.OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				
+				String idStr = Integer.toString((int)id);
+				String message = "ID: " + idStr + ", ";
+				message += "Pos: " + Integer.toString(position);
+		        Toast.makeText(ContentActivity.this, message,
+		                Toast.LENGTH_SHORT).show();
+		        Uri uri = Uri.withAppendedPath(HangmanContent.Words.CONTENT_ID_URI_BASE, idStr);
+		    	int count = getContentResolver().delete(uri,null,null);
+		    	if (count > 0) {
+		    		message = "Deleted!";
+		    		 Toast.makeText(ContentActivity.this, message,
+				                Toast.LENGTH_SHORT).show();
+		    	     mCursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,null,null,null);
+		    	     mCursorAdapter.changeCursor(mCursor);
+		    	}
+			}      	
+        });
+		
 	}
 
 	@Override
@@ -90,12 +120,11 @@ public class ContentActivity extends Activity {
 
     private void addWordToContent() {
 		TextView wordInput = (TextView)findViewById(R.id.newWordField);
-		String word = wordInput.getText().toString().toUpperCase();  	
-		//Call content provider
-
+		String word = wordInput.getText().toString().toUpperCase();  
+		wordInput.setText("");
 		TextView hintInput = (TextView)findViewById(R.id.hintField);
 		String hint = hintInput.getText().toString().toUpperCase();  
-		
+		hintInput.setText("");
 		
         ContentValues values = new ContentValues();
         values.put(HangmanContent.Words.COLUMN_NAME_WORD, word);
