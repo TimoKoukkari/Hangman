@@ -18,5 +18,7 @@
     <string name="EditButtonText">Edit words</string>
     <string name="HannuHanhi">hannuhanhi</string>
     <string name="HintString">Hint</string>
-
+    <string name="menu_open">Open</string>
+    <string name="menu_copy">Copy</string>
+    <string name="menu_delete">Delete</string>
 </resources>

@@ -13,7 +13,9 @@ import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,6 +29,7 @@ public class ContentActivity extends Activity {
     SimpleCursorAdapter mCursorAdapter;
     Cursor mCursor;
     Handler mHandler;
+    Long mSelectedId;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,22 +76,17 @@ public class ContentActivity extends Activity {
         mWordList.setAdapter(mCursorAdapter);  
         
         
-        mWordList.setOnItemSelectedListener(new ListView.OnItemSelectedListener() {
-        
-        	@Override
-			public void onItemSelected(AdapterView<?> parent,
-					View view, int position, long id) {
-				String message = "ID: " + Integer.toString((int)id) + " - ";
-				message += "Pos: " + Integer.toString(position);
-		        Toast.makeText(ContentActivity.this, message,
-		                Toast.LENGTH_LONG).show();			
-			}
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub			
-			}
-		});
-        
+        mWordList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() { 
+        	public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) { 
+        		startActionMode(modeCallBack); 
+        		view.setSelected(true); 
+        		mSelectedId = id;
+        		return true; 
+        	} 
+        }); 
+
+ 
+  /*      
         mWordList.setOnItemClickListener(new ListView.OnItemClickListener(){
 
 			@Override
@@ -104,14 +102,27 @@ public class ContentActivity extends Activity {
 		    		 message = "Deleted: " + idStr;
 		    		 Toast.makeText(ContentActivity.this, message,
 				                Toast.LENGTH_SHORT).show();
-		    	     //mCursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,null,null,null);
-		    	     //mCursorAdapter.changeCursor(mCursor);
 		    	}
 			}      	
         });
-		
+*/		
 	}
 
+        
+	private void deleteWord(long id) {
+		String idStr = Integer.toString((int)id);
+		String message = "ID: " + idStr + ", ";
+
+        Uri uri = Uri.withAppendedPath(HangmanContent.Words.CONTENT_ID_URI_BASE, idStr);
+    	int count = getContentResolver().delete(uri,null,null);
+    	if (count > 0) {
+    		 message = "Deleted: " + idStr;
+    		 Toast.makeText(ContentActivity.this, message,
+		                Toast.LENGTH_SHORT).show();
+    	}	
+	}
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -155,9 +166,6 @@ public class ContentActivity extends Activity {
 	        Toast.makeText(this, "Created:" + word + ": " + uri,
 	                Toast.LENGTH_LONG).show();	
 		}
-        // Refsesh view
-        //mCursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,null,null,null);
-        //mCursorAdapter.changeCursor(mCursor);
     }
     
     @Override
@@ -180,7 +188,33 @@ public class ContentActivity extends Activity {
 		public void onChange(boolean selfChange){
 	        mCursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,null,null,null);
 	        mCursorAdapter.changeCursor(mCursor);
-		}
-    	
+		} 	
     }
+    
+    // Context menu callback
+    private ActionMode.Callback modeCallBack = new ActionMode.Callback() { 
+    	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {    
+    		return false; 
+    	} 
+    	public void onDestroyActionMode(ActionMode mode) { 
+    		mode = null;    
+    	}   
+    	public boolean onCreateActionMode(ActionMode mode, Menu menu) { 
+    		mode.setTitle("Options"); 
+    		mode.getMenuInflater().inflate(R.menu.list_context_menu, menu); 
+    		return true; 
+    	} 
+    	public boolean onActionItemClicked(ActionMode mode, MenuItem item) { 
+    		int id = item.getItemId(); 
+    		switch (id) { 
+    		case R.id.context_delete: 
+    			deleteWord(mSelectedId);
+    			mode.finish(); 
+    			break; 
+    		default: 
+    			return false; 
+    		} 
+            return true;
+    	}; 
+    };  
 }
