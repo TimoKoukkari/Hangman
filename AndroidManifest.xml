@@ -41,7 +41,7 @@
         </activity>
         <provider android:name="HangmanContentProvider" 
                   android:authorities="com.example.provider.hangmancontent"
-                  android:exported="false">
+                  android:exported="true">
         </provider>
     </application>
 </manifest>
