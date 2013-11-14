@@ -4,6 +4,14 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <permission 
+        android:name="com.example.hangman.HIRSIPUU_READ" />
+    <permission
+        android:name="com.example.hangman.HIRSIPUU_WRITE" />
+    <uses-permission 
+        android:name="com.example.hangman.HIRSIPUU_READ" />
+    <uses-permission 
+        android:name="com.example.hangman.HIRSIPUU_WRITE" />
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="16" />
@@ -40,6 +48,8 @@
                 android:value=".ContentActivity" />
         </activity>
         <provider android:name="HangmanContentProvider" 
+                  android:readPermission="com.example.hangman.HIRSIPUU_READ"
+                  android:writePermission="com.example.hangman.HIRSIPUU_WRITE"
                   android:authorities="com.example.provider.hangmancontent"
                   android:exported="true">
         </provider>
