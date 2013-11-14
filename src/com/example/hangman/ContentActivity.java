@@ -123,7 +123,7 @@ public class ContentActivity extends Activity {
 		String word = wordInput.getText().toString().toUpperCase();  
 		wordInput.setText("");
 		TextView hintInput = (TextView)findViewById(R.id.hintField);
-		String hint = hintInput.getText().toString().toUpperCase();  
+		String hint = hintInput.getText().toString();  
 		hintInput.setText("");
 		
         ContentValues values = new ContentValues();
