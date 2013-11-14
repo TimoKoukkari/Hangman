@@ -86,26 +86,22 @@ public class ContentActivity extends Activity {
         }); 
 
  
-  /*      
+        
         mWordList.setOnItemClickListener(new ListView.OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				
-				String idStr = Integer.toString((int)id);
-				String message = "ID: " + idStr + ", ";
-
-		        Uri uri = Uri.withAppendedPath(HangmanContent.Words.CONTENT_ID_URI_BASE, idStr);
-		    	int count = getContentResolver().delete(uri,null,null);
-		    	if (count > 0) {
-		    		 message = "Deleted: " + idStr;
-		    		 Toast.makeText(ContentActivity.this, message,
-				                Toast.LENGTH_SHORT).show();
-		    	}
+				Cursor c = (Cursor) parent.getAdapter().getItem(position);
+			    String word = c.getString(c.getColumnIndex(HangmanContent.Words.COLUMN_NAME_WORD));
+                String hint = c.getString(c.getColumnIndex(HangmanContent.Words.COLUMN_NAME_HINT));
+				TextView wordField = (TextView)findViewById(R.id.newWordField);
+				TextView hintField = (TextView)findViewById(R.id.hintField);				
+				wordField.setText(word);
+				hintField.setText(hint);;	
 			}      	
         });
-*/		
+		
 	}
 
         
