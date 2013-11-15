@@ -7,7 +7,7 @@ import android.content.*;
 import android.database.Cursor;
 
 public class WordProcessor {
- 
+  
 	private String word = null;
 	private String hint = null;
 	private String letters = "";
