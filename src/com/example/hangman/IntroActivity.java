@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-//import android.widget.FrameLayout;
+//import android.widget.FrameLayout; 
 
 public class IntroActivity extends Activity implements OnClickListener {
     
