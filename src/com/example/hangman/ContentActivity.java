@@ -6,9 +6,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -23,11 +27,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ContentActivity extends Activity {
+public class ContentActivity extends Activity implements LoaderCallbacks<Cursor> {
    
     ListView mWordList;
     SimpleCursorAdapter mCursorAdapter;
-    Cursor mCursor;
+    Cursor mCursor = null;
     Handler mHandler;
     Long mSelectedId;
     
@@ -53,21 +57,22 @@ public class ContentActivity extends Activity {
         
      // Defines a list of View IDs that will receive the Cursor columns for each row
         int[] mWordListItems = { R.id.listItemWord, R.id.listItemHint};
-        
+
+/* This part not needed only if we use CursorLoader     
         mCursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,null,null,null);
       
-        // Register to content change indications
+        // Register to content change indications 
         Handler handler = new Handler();
         WordObserver observer = new WordObserver(handler);
         getContentResolver().registerContentObserver( 
         		HangmanContent.Words.CONTENT_URI, true, observer );
-
-        
+*/
+       
      // Creates a new SimpleCursorAdapter
         mCursorAdapter = new SimpleCursorAdapter(
             getApplicationContext(),               // The application's Context object
             R.layout.word_list,                  // A layout in XML for one row in the ListView
-            mCursor,                               // The result from the query
+            mCursor,                               // The result from the query or null if we use CursorLoader
             mWordListColumns,                      // A string array of column names in the cursor
             mWordListItems,                        // An integer array of view IDs in the row layout
             0);                    // Flags (usually none are needed)                                    
@@ -75,6 +80,7 @@ public class ContentActivity extends Activity {
         // Sets the adapter for the ListView
         mWordList.setAdapter(mCursorAdapter);  
         
+        getLoaderManager().initLoader(0,null,this);
         
         mWordList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() { 
         	public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) { 
@@ -84,9 +90,7 @@ public class ContentActivity extends Activity {
         		return true; 
         	} 
         }); 
-
- 
-        
+     
         mWordList.setOnItemClickListener(new ListView.OnItemClickListener(){
 
 			@Override
@@ -100,11 +104,23 @@ public class ContentActivity extends Activity {
 				wordField.setText(word);
 				hintField.setText(hint);;	
 			}      	
-        });
-		
+        });		
 	}
 
-        
+// CursorLoader stuff
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		return new CursorLoader(this, HangmanContent.Words.CONTENT_URI, null, null, null, null);
+	}
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		mCursorAdapter.swapCursor(cursor);		
+	}
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		mCursorAdapter.swapCursor(null);		
+	} 
+	
 	private void deleteWord(long id) {
 		String idStr = Integer.toString((int)id);
 		String message = "ID: " + idStr + ", ";
@@ -174,16 +190,17 @@ public class ContentActivity extends Activity {
         super.onResume();
     }
     
-    // Private class for handling Content Provider notifications
-    private class WordObserver extends ContentObserver {
+    // Private class for handling Content Provider notifications. Not needed if we use CursorLoader!
+    @SuppressWarnings("unused")
+	private class WordObserver extends ContentObserver {
 
 		public WordObserver(Handler handler) {
 			super(handler);		
 		}
 		@Override
 		public void onChange(boolean selfChange){
-	        mCursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,null,null,null);
-	        mCursorAdapter.changeCursor(mCursor);
+	       mCursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,null,null,null);
+	       mCursorAdapter.changeCursor(mCursor);
 		} 	
     }
     
@@ -212,5 +229,5 @@ public class ContentActivity extends Activity {
     		} 
             return true;
     	}; 
-    };  
+    }; 
 }
