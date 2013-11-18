@@ -108,15 +108,13 @@ public class ContentActivity extends Activity implements LoaderCallbacks<Cursor>
 	}
 
 // CursorLoader stuff
-	@Override
+
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 		return new CursorLoader(this, HangmanContent.Words.CONTENT_URI, null, null, null, null);
 	}
-	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		mCursorAdapter.swapCursor(cursor);		
+		mCursorAdapter.swapCursor(cursor);	
 	}
-	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		mCursorAdapter.swapCursor(null);		
 	} 
