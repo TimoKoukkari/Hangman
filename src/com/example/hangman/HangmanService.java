@@ -75,7 +75,7 @@ public class HangmanService extends Service {
     
 	private Timer inputTimer = null;
 	private TimerTask timeoutTask = null;
-	private Runnable timeoutHandler = null;
+	private Runnable toastHandler = null;
 	private Handler handler;
 	
     /**
@@ -101,17 +101,18 @@ public class HangmanService extends Service {
     	Toast.makeText(this, "Hangman service started", Toast.LENGTH_SHORT).show();
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
-        startTimer();
-        
+        startTimer(100);
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        // Cancel the timer 
-     
+		if (inputTimer != null){
+			  inputTimer.cancel();
+			  timeoutTask.cancel();
+			}
         // Tell the user we stopped.
-        Toast.makeText(this, "Hangman service stopped", Toast.LENGTH_SHORT).show();
+        showToast("Hangman service stopped");
     }
 
     @Override
@@ -119,38 +120,41 @@ public class HangmanService extends Service {
         return mBinder;
     }
 
-	private void startTimer(){
+	private void startTimer(long delay){
 		
 		if (inputTimer != null){
 		  inputTimer.cancel();
 		  timeoutTask.cancel();
 		}
 		
-		timeoutHandler = new Runnable(){
+		toastHandler = new Runnable(){
 			@Override
 			public void run() {
-				//fetchWordsFromNet();
-				showToast("Words updated");
+				showToast("Hangman words updated");
 			}
 		};
 
 		timeoutTask = new TimerTask() {
 			@Override
 			public void run() {
-				fetchWordsFromNet();
-				handler.post(timeoutHandler);
+				int count = fetchWordsFromNet();
+				// Show the toast only if something was added to the dictionary
+				if (count > 0) {
+				    handler.post(toastHandler);
+				}
 			}
 		};
 		inputTimer = new Timer();
-		inputTimer.schedule(timeoutTask, 10000);
+		inputTimer.schedule(timeoutTask, delay);
 	}   
     
     /**
      * Show a notification while this service is running.
      */
-    private void fetchWordsFromNet() {
+    private int fetchWordsFromNet() {
          //Fetch words and start a timer
 		URL url = null;
+		int insertCount=0;
 		try {
 			url = new URL("http://www.ideallearning.fi/sanat.xml");
 		} catch (MalformedURLException e1) {
@@ -199,8 +203,10 @@ public class HangmanService extends Service {
 				String[] selectionArgs = {word};		
 
 				Cursor cursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,selection,selectionArgs,null);
-				if (cursor == null || !cursor.moveToFirst())
+				if (cursor == null || !cursor.moveToFirst()) {
 					getContentResolver().insert(HangmanContent.Words.CONTENT_URI, values);
+				    insertCount++; 
+				    }
 			}
 
 		} catch (IOException e) {
@@ -214,15 +220,9 @@ public class HangmanService extends Service {
 				e.printStackTrace();
 			}
 		}
-		
-    	//showToast("Fetched words");
-        updateContentProvider();
-    }
-    
-    private void updateContentProvider() {
-    	//showToast("Updated content provider");
-    	startTimer();
-    }
+		startTimer(10000);
+		return insertCount;
+    }   
     
     private void showToast(String message){
     	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
