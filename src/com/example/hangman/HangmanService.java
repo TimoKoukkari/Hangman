@@ -16,6 +16,9 @@
 
 package com.example.hangman;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,6 +27,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 
@@ -50,6 +54,10 @@ public class HangmanService extends Service {
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
     
+	private Timer inputTimer = null;
+	private TimerTask timeoutTask = null;
+	private Runnable timeoutHandler = null;
+	
     /**
      * Class for clients to access.  Because we know this service always
      * runs in the same process as its clients, we don't need to deal with
@@ -73,7 +81,7 @@ public class HangmanService extends Service {
     	Toast.makeText(this, "Hangman service started", Toast.LENGTH_SHORT).show();
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
-        fetchWordsFromNet();
+        startTimer();
         
         return START_STICKY;
     }
@@ -91,17 +99,44 @@ public class HangmanService extends Service {
         return mBinder;
     }
 
+	private void startTimer(){
+		
+		if (inputTimer != null){
+		  inputTimer.cancel();
+		  timeoutTask.cancel();
+		}
+		
+		timeoutHandler = new Runnable(){
+			@Override
+			public void run() {
+				fetchWordsFromNet();
+			}
+		};
+
+		timeoutTask = new TimerTask() {
+			@Override
+			public void run() {
+				timeoutHandler.run();
+			}
+		};
+		inputTimer = new Timer();
+		inputTimer.schedule(timeoutTask, 10000);
+	}   
+    
     /**
      * Show a notification while this service is running.
      */
     private void fetchWordsFromNet() {
          //Fetch words and start a timer
-        Toast.makeText(this, "Hangman service fetched words", Toast.LENGTH_SHORT).show();
         updateContentProvider();
     }
     
     private void updateContentProvider() {
-    	Toast.makeText(this, "Hangman service updated datase", Toast.LENGTH_SHORT).show();
+    	startTimer();
+    }
+    
+    private void showToast(String message){
+    	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
 
