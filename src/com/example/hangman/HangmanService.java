@@ -40,6 +40,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
@@ -182,19 +183,24 @@ public class HangmanService extends Service {
 				e.printStackTrace();
 			}
 			// Empty database
-	    	getContentResolver().delete(HangmanContent.Words.CONTENT_URI,null,null);
+	    	//getContentResolver().delete(HangmanContent.Words.CONTENT_URI,null,null);
 	    	
 			NodeList words = xmlDoc.getElementsByTagName("word");
 			for (int i=0; i<words.getLength(); ++i) {
 	            if (words.item(i).getNodeType() != org.w3c.dom.Node.ELEMENT_NODE) continue;
 	            Element element = (Element)words.item(i);
-	            String word = element.getAttribute("value");
+	            String word = element.getAttribute("value").toUpperCase();
 	            String hint = ""; //element.getAttribute("hint");
 				System.out.println(word);
 		        ContentValues values = new ContentValues();
 		        values.put(HangmanContent.Words.COLUMN_NAME_WORD, word);
 		        values.put(HangmanContent.Words.COLUMN_NAME_HINT, hint);
-		        getContentResolver().insert(HangmanContent.Words.CONTENT_URI, values);
+				String selection = HangmanContent.Words.COLUMN_NAME_WORD + " = ?";
+				String[] selectionArgs = {word};		
+
+				Cursor cursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,selection,selectionArgs,null);
+				if (cursor == null || !cursor.moveToFirst())
+					getContentResolver().insert(HangmanContent.Words.CONTENT_URI, values);
 			}
 
 		} catch (IOException e) {
