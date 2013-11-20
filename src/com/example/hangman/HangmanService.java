@@ -38,7 +38,9 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -180,12 +182,19 @@ public class HangmanService extends Service {
 				e.printStackTrace();
 			}
 			// Empty database
-			
+	    	getContentResolver().delete(HangmanContent.Words.CONTENT_URI,null,null);
+	    	
 			NodeList words = xmlDoc.getElementsByTagName("word");
 			for (int i=0; i<words.getLength(); ++i) {
 	            if (words.item(i).getNodeType() != org.w3c.dom.Node.ELEMENT_NODE) continue;
 	            Element element = (Element)words.item(i);
-				System.out.println(element.getAttribute("value"));
+	            String word = element.getAttribute("value");
+	            String hint = "";
+				System.out.println(word);
+		        ContentValues values = new ContentValues();
+		        values.put(HangmanContent.Words.COLUMN_NAME_WORD, word);
+		        values.put(HangmanContent.Words.COLUMN_NAME_HINT, hint);
+		        getContentResolver().insert(HangmanContent.Words.CONTENT_URI, values);
 			}
 
 		} catch (IOException e) {
