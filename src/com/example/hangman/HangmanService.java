@@ -25,6 +25,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.FrameLayout;
@@ -57,6 +58,7 @@ public class HangmanService extends Service {
 	private Timer inputTimer = null;
 	private TimerTask timeoutTask = null;
 	private Runnable timeoutHandler = null;
+	private Handler handler;
 	
     /**
      * Class for clients to access.  Because we know this service always
@@ -72,7 +74,7 @@ public class HangmanService extends Service {
     @Override
     public void onCreate() {
 
-      
+      handler = new Handler();
     
     }
 
@@ -116,7 +118,7 @@ public class HangmanService extends Service {
 		timeoutTask = new TimerTask() {
 			@Override
 			public void run() {
-				timeoutHandler.run();
+				handler.post(timeoutHandler);
 			}
 		};
 		inputTimer = new Timer();
@@ -128,10 +130,12 @@ public class HangmanService extends Service {
      */
     private void fetchWordsFromNet() {
          //Fetch words and start a timer
+    	showToast("Fetched words");
         updateContentProvider();
     }
     
     private void updateContentProvider() {
+    	showToast("Updated content provider");
     	startTimer();
     }
     
