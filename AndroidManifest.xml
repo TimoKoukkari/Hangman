@@ -53,5 +53,6 @@
                   android:authorities="com.example.provider.hangmancontent"
                   android:exported="true">
         </provider>
+        <service android:name=".HangmanService" android:stopWithTask="true" />
     </application>
 </manifest>
