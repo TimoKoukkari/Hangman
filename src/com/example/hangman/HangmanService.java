@@ -16,14 +16,32 @@
 
 package com.example.hangman;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -111,13 +129,15 @@ public class HangmanService extends Service {
 		timeoutHandler = new Runnable(){
 			@Override
 			public void run() {
-				fetchWordsFromNet();
+				//fetchWordsFromNet();
+				showToast("Words updated");
 			}
 		};
 
 		timeoutTask = new TimerTask() {
 			@Override
 			public void run() {
+				fetchWordsFromNet();
 				handler.post(timeoutHandler);
 			}
 		};
@@ -130,12 +150,77 @@ public class HangmanService extends Service {
      */
     private void fetchWordsFromNet() {
          //Fetch words and start a timer
-    	showToast("Fetched words");
+		URL url = null;
+		try {
+			url = new URL("http://www.ideallearning.fi/sanat.xml");
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		HttpURLConnection con = null;
+		try {
+			con = (HttpURLConnection) url.openConnection();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		BufferedReader reader = null;
+		try {
+			InputStreamReader isr = new InputStreamReader(con.getInputStream());
+			reader = new BufferedReader(isr);
+			Document xmlDoc = null;
+			DocumentBuilder builder = null;
+			try {
+				builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				xmlDoc = builder.parse(con.getInputStream());
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// Empty database
+	    	//getContentResolver().delete(HangmanContent.Words.CONTENT_URI,null,null);
+	    	
+			NodeList words = xmlDoc.getElementsByTagName("word");
+			for (int i=0; i<words.getLength(); ++i) {
+	            if (words.item(i).getNodeType() != org.w3c.dom.Node.ELEMENT_NODE) continue;
+	            Element element = (Element)words.item(i);
+	            String word = element.getAttribute("value").toUpperCase();
+	            String hint = ""; //element.getAttribute("hint");
+				System.out.println(word);
+		        ContentValues values = new ContentValues();
+		        values.put(HangmanContent.Words.COLUMN_NAME_WORD, word);
+		        values.put(HangmanContent.Words.COLUMN_NAME_HINT, hint);
+				String selection = HangmanContent.Words.COLUMN_NAME_WORD + " = ?";
+				String[] selectionArgs = {word};		
+
+				Cursor cursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,selection,selectionArgs,null);
+				if (cursor == null || !cursor.moveToFirst())
+					getContentResolver().insert(HangmanContent.Words.CONTENT_URI, values);
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+    	//showToast("Fetched words");
         updateContentProvider();
     }
     
     private void updateContentProvider() {
-    	showToast("Updated content provider");
+    	//showToast("Updated content provider");
     	startTimer();
     }
     

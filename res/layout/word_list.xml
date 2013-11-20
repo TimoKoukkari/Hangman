@@ -9,13 +9,13 @@
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         android:text="Word"
-        android:textSize="12pt" />
+        android:textSize="8sp" />
 
     <TextView
         android:id="@+id/listItemHint"
         android:layout_width="253dp"
         android:layout_height="wrap_content"
         android:text="Hint"
-        android:textSize="8pt" />
+        android:textSize="6sp" />
 
 </LinearLayout>
