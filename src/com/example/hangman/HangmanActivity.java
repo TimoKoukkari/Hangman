@@ -26,7 +26,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class HangmanActivity extends Activity implements OnKeyListener {
+
+public class HangmanActivity extends Activity implements OnKeyListener,TaskReadyCallback {
 
 	private WordProcessor wp = null;
 	private String name = "Default";
@@ -77,23 +78,24 @@ public class HangmanActivity extends Activity implements OnKeyListener {
 		}
 		
 		if (savedWord == null) {
-			wp = new WordProcessor(getApplicationContext());
+			wp = new WordProcessor(getApplicationContext(), this);
 			wp.pickWord(); 
 			// Restore saved state
 		} else { 
-			wp = new WordProcessor(getApplicationContext(), savedWord, savedLetters);	
-		}
+			wp = new WordProcessor(getApplicationContext(), this, savedWord, savedLetters);	
+			onTaskReady();
+		}		
+	}
 
+	public void onTaskReady(){
 		TextView v = (TextView) findViewById(R.id.listItemWord);
 		v.setText(wp.getMaskedWord());
         
-        Toast.makeText(this, wp.getHint(),
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(this, wp.getHint(),Toast.LENGTH_LONG).show();
 		
 		startTimer();
-		
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

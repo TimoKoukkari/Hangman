@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 import android.content.*;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 
 public class WordProcessor {
    
@@ -12,29 +14,31 @@ public class WordProcessor {
 	private String hint = null;
 	private String letters = "";
 	private Context context = null;
+	private TaskReadyCallback callBack = null;
 	
-	public WordProcessor (Context c) {
+	public WordProcessor (Context c, TaskReadyCallback cb) {
 		context = c;
+		callBack = cb;
 	}
 	
 	// Constructor that is used to restore saved state
-	public WordProcessor (Context c, String restoreWord, String restoreLetters) {
+	public WordProcessor (Context c, TaskReadyCallback cb,String restoreWord, String restoreLetters) {
 		context = c;
+		callBack = cb;
 		word = restoreWord;
 		letters = restoreLetters;
 	}
-	/**
-	 * Selects the word randomly from a word list in resources.
-	 */
-	void pickWord() {
-		
-		String[] words = context.getResources().getStringArray(R.array.Words);		
-		
-		Random r = new Random();
-		
-		Cursor cursor = context.getContentResolver().query(
-				HangmanContent.Words.CONTENT_URI,null,null,null,null);
 
+	// Queries words from the content provider
+	void pickWord() {		
+		new QueryTask().execute(HangmanContent.Words.CONTENT_URI);		
+	}
+	
+	// Selects a random word from the query results
+	void onQueryReady(Cursor cursor){		
+		
+		Random r = new Random();	
+		
         if ((cursor != null) && (cursor.getCount() > 0)) {
             int i = r.nextInt(cursor.getCount());
             cursor.moveToPosition(i);
@@ -44,10 +48,12 @@ public class WordProcessor {
             hint = cursor.getString(index);
             cursor.close();
         } else {
+    		String[] words = context.getResources().getStringArray(R.array.Words);
     		int i = r.nextInt(words.length);
     		word = words[i].toUpperCase();
     		hint = word;
         }		
+        callBack.onTaskReady();
 	}
 	
 	/**
@@ -93,4 +99,23 @@ public class WordProcessor {
 			return true;
 		return false;
 	}
+	
+	
+	 private class QueryTask extends AsyncTask<Uri, Integer, Cursor> {
+	     protected Cursor doInBackground(Uri... uris) {
+	    	publishProgress(0);
+	 		Cursor cursor = context.getContentResolver().query(
+					uris[0],null,null,null,null);
+	 		publishProgress(100);
+	        return cursor;
+	     }
+
+	     protected void onProgressUpdate(Integer... progress) {	         
+	     }
+
+	     protected void onPostExecute(Cursor result) {
+	         onQueryReady(result);
+	     }
+	 }
+	 
 }
