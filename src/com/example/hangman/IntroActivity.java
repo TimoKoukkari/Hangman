@@ -1,6 +1,7 @@
 package com.example.hangman;
 
 //import com.example.hangman.HangmanPicture;
+
 import com.example.hangman.R;
 
 import android.os.Bundle;
@@ -37,6 +38,9 @@ public class IntroActivity extends Activity implements OnClickListener {
         		startActivity(editIntent);  	;
             };
         });
+        
+        startService(new Intent(this,
+                HangmanService.class));
         
         if (savedInstanceState != null) {
         	name = savedInstanceState.getString("NAME");
