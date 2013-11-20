@@ -29,26 +29,20 @@ public class WordProcessor {
 	void pickWord() {
 		
 		String[] words = context.getResources().getStringArray(R.array.Words);		
-		List<String> wordList = new ArrayList<String>();
-		List<String> hintList = new ArrayList<String>();
 		
 		Random r = new Random();
 		
 		Cursor cursor = context.getContentResolver().query(
 				HangmanContent.Words.CONTENT_URI,null,null,null,null);
-        if (cursor != null) {
-            while(cursor.moveToNext()) {
-                int index = cursor.getColumnIndex(HangmanContent.Words.COLUMN_NAME_WORD);
-                wordList.add(cursor.getString(index));
-                index = cursor.getColumnIndex(HangmanContent.Words.COLUMN_NAME_HINT);
-                hintList.add(cursor.getString(index));
-            }
+
+        if ((cursor != null) && (cursor.getCount() > 0)) {
+            int i = r.nextInt(cursor.getCount());
+            cursor.moveToPosition(i);
+            int index = cursor.getColumnIndex(HangmanContent.Words.COLUMN_NAME_WORD);
+            word = cursor.getString(index).toUpperCase();
+            index = cursor.getColumnIndex(HangmanContent.Words.COLUMN_NAME_HINT);
+            hint = cursor.getString(index);
             cursor.close();
-        }
-        if (wordList.size() > 0) {
-            int i = r.nextInt(wordList.size());
-            word = wordList.get(i).toUpperCase();
-            hint = hintList.get(i);
         } else {
     		int i = r.nextInt(words.length);
     		word = words[i].toUpperCase();
