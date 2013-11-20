@@ -189,7 +189,7 @@ public class HangmanService extends Service {
 	            if (words.item(i).getNodeType() != org.w3c.dom.Node.ELEMENT_NODE) continue;
 	            Element element = (Element)words.item(i);
 	            String word = element.getAttribute("value");
-	            String hint = "";
+	            String hint = ""; //element.getAttribute("hint");
 				System.out.println(word);
 		        ContentValues values = new ContentValues();
 		        values.put(HangmanContent.Words.COLUMN_NAME_WORD, word);
