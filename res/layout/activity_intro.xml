@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -20,17 +21,6 @@
 
             <requestFocus />
         </EditText>
-
-        <TextView
-            android:id="@+id/Instructions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/nameField"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="81dp"
-            android:text="@string/Instructions"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="6pt" />
 
         <Button
             android:id="@+id/startButton"
@@ -51,5 +41,22 @@
             android:layout_alignRight="@+id/nameField"
             android:layout_marginBottom="26dp"
             android:text="@string/EditButtonText" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Instructions"
+            android:src="@drawable/banksy" />
+
+        <TextView
+            android:id="@+id/Instructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/imageView1"
+            android:layout_centerVertical="true"
+            android:text="@string/Instructions"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="6pt" />
 
 </RelativeLayout>
