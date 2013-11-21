@@ -39,7 +39,7 @@ public class ContentActivity extends Activity implements LoaderCallbacks<Cursor>
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_content);
-        Button b = (Button) findViewById(R.id.AddWordButton);
+        Button b = (Button) findViewById(R.id.BUTTON_ADD_WORD);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,10 +53,10 @@ public class ContentActivity extends Activity implements LoaderCallbacks<Cursor>
             HangmanContent.Words.COLUMN_NAME_WORD,   // Contract class constant containing the word column name
             HangmanContent.Words.COLUMN_NAME_HINT  // Contract class constant containing the locale column name
         };
-        mWordList = (ListView)findViewById(R.id.wordList);
+        mWordList = (ListView)findViewById(R.id.LIST_WORDS);
         
      // Defines a list of View IDs that will receive the Cursor columns for each row
-        int[] mWordListItems = { R.id.listItemWord, R.id.listItemHint};
+        int[] mWordListItems = { R.id.FIELD_LISTITEM_WORD, R.id.FIELD_LISTITEM_HINT};
 
 /* This part not needed only if we use CursorLoader     
         mCursor = getContentResolver().query(HangmanContent.Words.CONTENT_URI,null,null,null,null);
@@ -99,8 +99,8 @@ public class ContentActivity extends Activity implements LoaderCallbacks<Cursor>
 				Cursor c = (Cursor) parent.getAdapter().getItem(position);
 			    String word = c.getString(c.getColumnIndex(HangmanContent.Words.COLUMN_NAME_WORD));
                 String hint = c.getString(c.getColumnIndex(HangmanContent.Words.COLUMN_NAME_HINT));
-				TextView wordField = (TextView)findViewById(R.id.newWordField);
-				TextView hintField = (TextView)findViewById(R.id.hintField);				
+				TextView wordField = (TextView)findViewById(R.id.FIELD_INPUT_WORD);
+				TextView hintField = (TextView)findViewById(R.id.FIELD_INPUT_HINT);				
 				wordField.setText(word);
 				hintField.setText(hint);;	
 			}      	
@@ -148,10 +148,10 @@ public class ContentActivity extends Activity implements LoaderCallbacks<Cursor>
     }
 
     private void addWordToContent() {
-		TextView wordInput = (TextView)findViewById(R.id.newWordField);
+		TextView wordInput = (TextView)findViewById(R.id.FIELD_INPUT_WORD);
 		String word = wordInput.getText().toString().toUpperCase();  
 		wordInput.setText("");
-		TextView hintInput = (TextView)findViewById(R.id.hintField);
+		TextView hintInput = (TextView)findViewById(R.id.FIELD_INPUT_HINT);
 		String hint = hintInput.getText().toString();  
 		hintInput.setText("");
 		

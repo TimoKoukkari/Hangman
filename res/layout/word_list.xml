@@ -5,14 +5,14 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/listItemWord"
+        android:id="@+id/FIELD_LISTITEM_WORD"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         android:text="Word"
         android:textSize="8sp" />
 
     <TextView
-        android:id="@+id/listItemHint"
+        android:id="@+id/FIELD_LISTITEM_HINT"
         android:layout_width="253dp"
         android:layout_height="wrap_content"
         android:text="Hint"

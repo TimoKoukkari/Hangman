@@ -37,7 +37,11 @@ public class HangmanActivity extends Activity implements OnKeyListener,TaskReady
 	private TimerTask timeoutTask;
 	private Runnable timeoutHandler;
 
-	boolean hwKbd=false;
+	private EditText inputLetterField;
+	private TextView maskedWordField;
+	private HangmanPicture hangmanPicture;
+	
+	private boolean hwKbd=false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,25 +61,22 @@ public class HangmanActivity extends Activity implements OnKeyListener,TaskReady
 
 		setContentView(R.layout.activity_main);
 
+		maskedWordField = (TextView) findViewById(R.id.FIELD_MASKED_WORD);
+		maskedWordField.setVisibility(View.INVISIBLE);
+		inputLetterField = (EditText) findViewById(R.id.FIELD_INPUT_LETTER);
+		inputLetterField.setVisibility(View.INVISIBLE);
+		
 		//Write user's name
-		TextView user = (TextView)findViewById(R.id.User);
+		TextView user = (TextView)findViewById(R.id.FIELD_USER);
 		user.setText(name);
 
 		FrameLayout frame = (FrameLayout) findViewById(R.id.area);
-		HangmanPicture k = new HangmanPicture(this);
+		hangmanPicture = new HangmanPicture(this);
 		// Restore saved level
 		if (level > 0) {
-			k.setLevel(level);
+			hangmanPicture.setLevel(level);
 		}
-		frame.addView(k);
-		EditText t = (EditText) findViewById(R.id.newWordField);		
-		hwKbd = (getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS);
-		if (!hwKbd) {
-			setSwKbdListener(t);
-			k.setScale(0.5F);
-		} else {
-			t.setOnKeyListener(this);
-		}
+		frame.addView(hangmanPicture);
 		
 		if (savedWord == null) {
 			wp = new WordProcessor(getApplicationContext(), this);
@@ -88,9 +89,19 @@ public class HangmanActivity extends Activity implements OnKeyListener,TaskReady
 	}
 
 	public void onTaskReady(){
-		TextView v = (TextView) findViewById(R.id.listItemWord);
-		v.setText(wp.getMaskedWord());
-        
+		
+		maskedWordField.setText(wp.getMaskedWord());
+		maskedWordField.setVisibility(View.VISIBLE);
+		
+		hwKbd = (getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS);
+		if (!hwKbd) {
+			setSwKbdListener(inputLetterField);
+			hangmanPicture.setScale(0.5F);
+		} else {
+			inputLetterField.setOnKeyListener(this);
+		}
+		inputLetterField.setVisibility(View.VISIBLE);
+		
         Toast.makeText(this, wp.getHint(),Toast.LENGTH_LONG).show();
 		
 		startTimer();
@@ -114,7 +125,6 @@ public class HangmanActivity extends Activity implements OnKeyListener,TaskReady
 		if (arg2.getAction() != KeyEvent.ACTION_DOWN) {
 			return true;
 		}
-
         handleChar(c);
 		return true;
 	}
@@ -124,18 +134,17 @@ public class HangmanActivity extends Activity implements OnKeyListener,TaskReady
 		inputTimer.cancel();
 		timeoutTask.cancel();
 
-		FrameLayout frame = (FrameLayout) findViewById(R.id.area);
-		HangmanPicture k = (HangmanPicture) frame.getChildAt(0);	
+		//FrameLayout frame = (FrameLayout) findViewById(R.id.area);
+		//HangmanPicture k = (HangmanPicture) frame.getChildAt(0);	
 		if (!wp.addLetter(C)) {
-			k.setLevel(++level);
+			hangmanPicture.setLevel(++level);
 		}
 		String s = wp.getMaskedWord();
-		TextView t = (TextView) findViewById(R.id.listItemWord);
-		t.setText(s);
+		maskedWordField.setText(s);
 		// The user has guessed the word
 		if (!s.contains("_")){
 			level = 10;
-			k.setLevel(level);
+			hangmanPicture.setLevel(level);
 		}
 		// Game over!
 		if (level > 8) {	
@@ -175,9 +184,9 @@ public class HangmanActivity extends Activity implements OnKeyListener,TaskReady
 			@Override
 			public void run() {
 				level = 9;
-				FrameLayout frame = (FrameLayout) findViewById(R.id.area);
-				HangmanPicture k = (HangmanPicture) frame.getChildAt(0);
-				k.setLevel(level);
+				//FrameLayout frame = (FrameLayout) findViewById(R.id.area);
+				//HangmanPicture k = (HangmanPicture) frame.getChildAt(0);
+				hangmanPicture.setLevel(level);
 				gameOver();
 			}
 		};
@@ -193,10 +202,8 @@ public class HangmanActivity extends Activity implements OnKeyListener,TaskReady
 	}
 	
 	private void gameOver() {
-		TextView t = (TextView) findViewById(R.id.listItemWord);
-		t = (TextView) findViewById(R.id.newWordField);
-		t.setVisibility(View.INVISIBLE);
-		t.setOnKeyListener(null); 
+		inputLetterField.setVisibility(View.INVISIBLE);
+		inputLetterField.setOnKeyListener(null); 
 	}
 
 	@Override

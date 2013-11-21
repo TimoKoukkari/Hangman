@@ -1,7 +1,5 @@
 package com.example.hangman;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import android.content.*;
 import android.database.Cursor;
@@ -94,6 +92,9 @@ public class WordProcessor {
 	 * @return true if letter is in the word.
 	 */
 	boolean addLetter(char c) {
+		if (letters.indexOf(c) >= 0){
+			return true; // ignore, user has already guessed this letter!
+		}
 		letters += c;
 		if (word.indexOf(c) >=0 )
 			return true;

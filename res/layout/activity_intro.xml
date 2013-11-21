@@ -9,7 +9,7 @@
     tools:context=".IntroActivity" >
 
         <EditText
-            android:id="@+id/nameField"
+            android:id="@+id/FIELD_INPUT_USER"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/Instructions"
@@ -25,7 +25,7 @@
             android:id="@+id/Instructions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/nameField"
+            android:layout_alignLeft="@+id/FIELD_INPUT_USER"
             android:layout_alignParentTop="true"
             android:layout_marginTop="81dp"
             android:text="@string/Instructions"
@@ -33,22 +33,22 @@
             android:textSize="6pt" />
 
         <Button
-            android:id="@+id/startButton"
+            android:id="@+id/BUTTON_START"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/nameField"
-            android:layout_below="@+id/nameField"
+            android:layout_alignLeft="@+id/FIELD_INPUT_USER"
+            android:layout_below="@+id/FIELD_INPUT_USER"
             android:layout_marginLeft="49dp"
             android:layout_marginTop="79dp"
             android:text="@string/startButtonText" />
 
         <Button
-            android:id="@+id/EditContentButton"
+            android:id="@+id/BUTTON_EDIT_WORDS"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/nameField"
+            android:layout_alignRight="@+id/FIELD_INPUT_USER"
             android:layout_marginBottom="26dp"
             android:text="@string/EditButtonText" />
 
