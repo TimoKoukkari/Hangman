@@ -24,21 +24,22 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int banksy=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
         public static final int BUTTON_ADD_WORD=0x7f090003;
-        public static final int BUTTON_EDIT_WORDS=0x7f090008;
-        public static final int BUTTON_START=0x7f090007;
+        public static final int BUTTON_EDIT_WORDS=0x7f090007;
+        public static final int BUTTON_START=0x7f090005;
         public static final int FIELD_INPUT_HINT=0x7f090002;
         public static final int FIELD_INPUT_LETTER=0x7f09000b;
-        public static final int FIELD_INPUT_USER=0x7f090005;
+        public static final int FIELD_INPUT_USER=0x7f090006;
         public static final int FIELD_INPUT_WORD=0x7f090001;
         public static final int FIELD_LISTITEM_HINT=0x7f09000e;
         public static final int FIELD_LISTITEM_WORD=0x7f09000d;
         public static final int FIELD_MASKED_WORD=0x7f09000c;
         public static final int FIELD_USER=0x7f090009;
-        public static final int Instructions=0x7f090006;
+        public static final int Instructions=0x7f090008;
         public static final int LIST_WORDS=0x7f090004;
         public static final int LinearLayout1=0x7f090000;
         public static final int action_settings=0x7f090010;
