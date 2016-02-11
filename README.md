@@ -1,2 +1,4 @@
 Hangman
 =======
+
+Simple Android app.
